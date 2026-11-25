@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {PHYSICS,rate,survival,decayInDna,helix,siteProbabilities,scoreDsb,monteCarlo,anyBreakAnalytic,fates,hprtInduced,sampleOneEvent} from '../science.js';
+const close=(actual,expected,tol=1e-10)=>assert.ok(Math.abs(actual-expected)<tol,`${actual} != ${expected}`);
+test('Semividas y signo de actividad',()=>{close(rate(59.4)*59.4,Math.LN2);close(survival(59.4,59.4),.5);close(survival(8.021,8.021),.5);});
+test('Competencia desintegración/salida y escenarios conservadores',()=>{close(decayInDna(59.4,2),.02280603507238289);close(decayInDna(8.021,2),.1473637698475143);assert.ok(decayInDna(8.021,2,1)<decayInDna(8.021,2));});
+test('Geometría ADN B y rotura doble operativa',()=>{const {a,b}=helix();close(Math.hypot(...a[30].map((x,i)=>x-b[30][i])),2);close(a[31][2]-a[30][2],.34);const x=Array(60).fill(false),y=Array(60).fill(false);x[20]=true;y[30]=true;assert.ok(scoreDsb(x,y));y[30]=false;y[31]=true;assert.ok(!scoreDsb(x,y));});
+test('Monte Carlo independiente reproducible y límite analítico',()=>{const m1=monteCarlo(0,.48,1.5,5000,2026),m2=monteCarlo(0,.48,1.5,5000,2026),mFar=monteCarlo(7,.48,1.5,5000,2026);assert.deepEqual(m1,m2);assert.ok(m1.dsb>mFar.dsb);const p=anyBreakAnalytic(0,.48,1.5);const sigma=Math.sqrt(p*(1-p)/5000);assert.ok(Math.abs(m1.any-p)<5*sigma);});
+test('Destinos compiten y suman 1',()=>{for(const t of [0,.1,1,10,24,100]){const r=fates(t);close(r.remaining+r.repair+r.mutation+r.loss,1,1e-12);}});
+test('HPRT: no confundir cGy y Gy',()=>{close(hprtInduced(38)*1e6,17.1);close(hprtInduced(.38*100),hprtInduced(38));});
+test('La muestra de lesión es determinista con una semilla',()=>assert.deepEqual(sampleOneEvent(2,.48,1.5,2026),sampleOneEvent(2,.48,1.5,2026)));

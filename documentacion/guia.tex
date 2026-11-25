@@ -1,0 +1,253 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.25cm,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\usepackage[spanish,es-noquoting]{babel}
+\usepackage{amsmath,amssymb,booktabs,array,longtable,graphicx,xcolor,fancyhdr,enumitem,microtype}
+\usepackage[colorlinks=true,linkcolor=teal,urlcolor=teal,citecolor=teal]{hyperref}
+\definecolor{navy}{HTML}{0B1D32}\definecolor{teal}{HTML}{087E83}\definecolor{gold}{HTML}{AF642B}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{navy}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{teal}}{\thesubsection}{.6em}{}
+\pagestyle{fancy}\fancyhf{}\lhead{\footnotesize SUBATÓMICA · ADN HUMANO}\rhead{\footnotesize Proyecto de investigación}\cfoot{\thepage}
+\newcommand{\I}{\mathrm I}\newcommand{\Te}{\mathrm{Te}}\newcommand{\Xe}{\mathrm{Xe}}
+\newcommand{\pb}{\,\mathrm{pb}}\newcommand{\nm}{\,\mathrm{nm}}
+\newcommand{\dato}[1]{\textcolor{teal}{\textsf{[DATO] #1}}}
+\newcommand{\hip}[1]{\textcolor{gold}{\textsf{[MODELO] #1}}}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\begin{document}
+\begin{titlepage}
+\color{navy}\vspace*{1.7cm}
+{\sffamily\bfseries\Large UNIVERSIDAD NACIONAL DE COLOMBIA\par}
+{\sffamily Departamento de Física · Física Subatómica\par}\vspace{2.2cm}
+{\Huge\bfseries Cuando un núcleo decae dentro del ADN humano\par}\vspace{.55cm}
+{\Large De la captura electrónica a las lesiones, la reparación y las mutaciones HPRT\par}
+\vspace{1.4cm}\color{teal}\rule{\textwidth}{1.5pt}\color{navy}\vspace{.75cm}
+{\large Guía científica y matemática para exposición tipo congreso\par}
+{\large Artículo conductor: Whaley y Little (1990)\par}
+\vfill
+\textbf{Equipo:} Proyecto de Física Subatómica\par
+\textbf{Fecha:} noviembre de 2026 · Bogotá, Colombia\par
+\vspace{1cm}{\footnotesize Las figuras audiovisuales incluidas son esquemas y modelos propios; no son microfotografías ni datos de pacientes.}
+\end{titlepage}
+\begin{abstract}
+¿Por qué el mismo radionúclido puede cambiar su efecto biológico al pasar de un medio extracelular al ADN? Resolvemos esta pregunta con la comparación experimental de Whaley y Little entre las líneas linfoblastoides humanas TK6 y SE30 expuestas a iododesoxiuridina marcada con $^{125}$I o $^{131}$I \cite{whaley}. Separamos cuatro niveles: el proceso nuclear que origina las radiaciones; la probabilidad de que el átomo decaiga mientras permanece en ADN; la geometría de las lesiones moleculares; y la selección experimental de mutantes HPRT. Derivamos las leyes de desintegración, un modelo de permanencia con riesgos competitivos, una regla geométrica de rotura doble y un modelo de destinos celulares. La única pendiente de mutación usada como cifra observada es $0.45\times10^{-6}$ mutantes inducidos por cGy para $^{131}$IUdR en TK6 \cite{whaley}. Las simulaciones de lesiones y reparación exploran hipótesis declaradas; no predicen el riesgo de una persona. La entrega incluye código, resultados y seis vídeos narrativos aptos para proyección.
+\end{abstract}
+\tableofcontents\clearpage
+
+\section{El problema, su interés y una respuesta comprobable}
+\subsection{Motivación}
+La actividad radiactiva informa cuántas desintegraciones ocurren por segundo, pero no indica en qué parte de una célula se libera energía. Si un análogo de timidina, la iododesoxiuridina (IdUrd o IUdR), se incorpora al ADN durante la replicación, el átomo de yodo puede quedar próximo a la columna azúcar--fosfato. Si el átomo permanece fuera de la célula, la misma desintegración ocurre a otra distancia. La localización, la energía y la historia de reparación deben distinguirse. Whaley y Little compararon precisamente ambos escenarios en células humanas \cite{whaley}.
+
+La aplicación inmediata es interpretar experimentos con radionúclidos dirigidos al núcleo y diseñar preguntas para radiofármacos. La comparación también enseña por qué una exposición ambiental a yoduro, una fuente de rayos X externa y un análogo de ADN marcado no se pueden declarar equivalentes por el simple hecho de contener radiación. El análisis conecta física nuclear, transporte de energía, biología molecular y lectura crítica de datos.
+
+\subsection{Pregunta y objetivos}
+\textbf{Pregunta:} ¿cómo afectan el modo de decaimiento y la distancia fuente--ADN la cadena entre desintegración y mutación HPRT en células humanas, y qué parte de esta cadena permite respaldar el experimento de Whaley y Little?
+
+\textbf{Objetivos:} (1) derivar las leyes temporales de $^{125}$I y $^{131}$I; (2) distinguir captura electrónica, desexcitación atómica y beta menos; (3) estudiar por simulación cómo una hipótesis espacial modifica la probabilidad de una rotura doble; (4) separar lesión, mutación y pérdida celular; (5) calcular una extrapolación \emph{explícita} de la pendiente HPRT publicada; (6) comunicar resultados, supuestos y límites con vídeos y figuras reproducibles.
+
+\subsection{Hipótesis y resultado principal}
+\dato{El artículo observa mayores efectos de muerte y mutación cuando la IdUrd marcada se incorpora en ADN que cuando permanece en el medio, bajo sus condiciones de cultivo y sus controles TK6/SE30 \cite{whaley}.} \hip{Nuestra predicción cualitativa es que acercar la fuente a las dos hebras aumenta las lesiones agrupadas si la probabilidad de rotura decrece con la distancia.} Lo segundo es una consecuencia del modelo condicional, no una medición del artículo.
+
+\section{Artículo guía: diseño, resultados y lectura crítica}
+\textbf{Referencia íntegra:} Whaley, J. M. y Little, J. B., ``Efficient mutation induction by $^{125}$I and $^{131}$I decays in DNA of human cells'', \emph{Radiation Research} \textbf{123}, 68--74 (1990), DOI \href{https://doi.org/10.2307/3577659}{10.2307/3577659}; resumen abierto en \href{https://pubmed.ncbi.nlm.nih.gov/2371380/}{PubMed, PMID 2371380} \cite{whaley}. El artículo completo puede requerir acceso institucional; los resultados cuantitativos atribuidos aquí están explícitos en su resumen público.
+
+TK6 es competente para la ruta de salvamento de timidina mediada por timidina cinasa (TK). SE30 tiene deficiencia en esa capacidad y permite comparar IdUrd que se incorpora con IdUrd cuya incorporación es deficiente. Se midieron muerte celular y mutantes en el locus \emph{hprt}. No se interpreta la comparación como un experimento de ADN purificado ni se atribuye a SE30 una incorporación estrictamente nula. El propio trabajo examinó explicaciones alternativas como sensibilidad basal distinta a radiación y sensibilización por IdUrd \cite{whaley}.
+
+\begin{center}\small\begin{tabular}{p{.18\textwidth}p{.34\textwidth}p{.37\textwidth}}\toprule
+Sistema & Fuente de radiación & Lectura \tabularnewline\midrule
+TK6 + $^{125}$IIdUrd & Análogo incorporado en ADN & Efectos tóxicos y mutagénicos pronunciados, cualitativos en el resumen. \\
+SE30 + $^{125}$IIdUrd & Incorporación deficiente; actividad en el medio & Prácticamente sin efecto bajo las condiciones descritas en el resumen. \\
+TK6 + $^{131}$IIdUrd & Análogo incorporado en ADN & Pendiente HPRT inducida $0.45\times10^{-6}$ mutantes/cGy. \\
+SE30 + $^{131}$IIdUrd & Actividad en el medio & Pocas mutaciones para dosis nucleares hasta $38$ cGy. \\
+\bottomrule\end{tabular}\end{center}
+
+\textbf{Precaución de lectura:} el valor $38$ cGy corresponde al límite de comparación indicado para células deficientes; aplicarlo a la pendiente de TK6 en la sección \ref{sec:hprt} es una \emph{extrapolación aritmética}, no un dato TK6 medido a esa dosis. No atribuimos al artículo valores numéricos de roturas dobles por cada desintegración de $^{125}$I ni una pendiente de mutación para $^{125}$I que no constan en el resumen.
+
+Como apoyo geométrico, Martin y Haseltine estudiaron una deoxicitidina marcada con $^{125}$I en una posición definida de un fragmento de ADN: el daño radioquímico se concentró dentro de $15$--$20$ \AA{} ($1.5$--$2\nm$) y detectaron roturas hasta $70$ \AA{} ($7\nm$) \cite{martin}. Estas son distancias de daño en \emph{ese montaje experimental}, distintas del enunciado de Whaley y Little sobre depósito de gran parte de la energía de Auger a menos de $20\nm$ del sitio de desintegración \cite{whaley}. Ni un alcance de electrón ni la distribución de una rotura quedan completamente determinados por una sola longitud.
+
+\section{Núcleo y curso: de la tasa a la actividad}
+\subsection{Derivación completa de la ley exponencial}
+Las diapositivas del curso \emph{Decays and scattering} introducen la probabilidad de decaimiento por unidad de tiempo y la densidad de estados. Escribimos $\lambda$ [día$^{-1}$] para la probabilidad instantánea de desintegración por átomo (el símbolo $\Gamma$ de ciertas diapositivas representa la misma tasa cuando su dimensión es tiempo$^{-1}$) \cite{curso}. La probabilidad de sobrevivir a un intervalo $dt$ es $1-\lambda dt+o(dt)$. Por ello, si $N(t)$ es el número medio de núcleos no desintegrados,
+\begin{align}
+N(t+dt)&=N(t)(1-\lambda dt)+o(dt),\\
+N(t+dt)-N(t)&=-\lambda N(t)dt+o(dt),\\
+\lim_{dt\to0}\frac{N(t+dt)-N(t)}{dt}&=-\lambda N(t).
+\end{align}
+Separamos variables, integramos desde $(0,N_0)$ hasta $(t,N(t))$, y usamos $\int dN/N=\ln N$:
+\begin{align}
+\frac{dN}{N}&=-\lambda\,dt, &
+\int_{N_0}^{N(t)}\frac{dN'}{N'}&=-\lambda\int_0^t dt',\\
+\ln\!\frac{N(t)}{N_0}&=-\lambda t, &N(t)&=N_0e^{-\lambda t}.
+\end{align}
+La semivida $T_{1/2}$ satisface $N(T_{1/2})=N_0/2$; entonces $1/2=e^{-\lambda T_{1/2}}$, $\ln(1/2)=-\lambda T_{1/2}$ y
+\begin{equation}\boxed{\lambda=\frac{\ln2}{T_{1/2}},\qquad \tau=\lambda^{-1}=\frac{T_{1/2}}{\ln2}.}\end{equation}
+La actividad es el \emph{número positivo de desintegraciones por tiempo}: $A(t)=-dN/dt=\lambda N(t)$, y $1$ Bq $=1$ s$^{-1}$. Si $\lambda$ se calcula por día, conviértase a s$^{-1}$ antes de informar actividad en Bq: $\lambda_{\mathrm{s}^{-1}}=\lambda_{\mathrm{día}^{-1}}/86400$. Un signo positivo delante de $dN/dt$ describiría una derivada negativa, no una actividad positiva.
+
+\subsection{Ramas de decaimiento y amplitud cuántica}
+Si existen rutas independientes con tasas $\lambda_k$, en un intervalo $dt$ la probabilidad total es $(\sum_k\lambda_k)dt$. De ahí $\lambda_{\mathrm{total}}=\sum_k\lambda_k$ y la razón de ramificación $b_k=\lambda_k/\lambda_{\mathrm{total}}$, con $\sum b_k=1$. Esto enlaza con la tasa de transición de Fermi $\lambda_{i\to f}\propto |\langle f|V|i\rangle|^2\rho(E_f)$ en las diapositivas \cite{curso}. El modelo temporal de supervivencia puede representarse por una amplitud $\psi(t)\propto e^{-iEt/\hbar}e^{-\lambda t/2}$; su módulo al cuadrado da $e^{-\lambda t}$. Aquí $\lambda$ es una tasa temporal; una anchura energética convencional es $\Gamma_E=\hbar\lambda$, que tiene unidades de energía. No igualamos una anchura en eV a una tasa en s$^{-1}$ sin este factor.
+
+\section{$^{125}$I: captura electrónica y cascada Auger}
+\subsection{Conservación de números cuánticos}
+En la captura electrónica un protón nuclear capta un electrón ligado y se transforma en neutrón: $p+e^-\rightarrow n+\nu_e$ a escala de nucleones. El núcleo tiene $A=125$ antes y después, mientras $Z$ pasa de 53 a 52:
+\begin{equation}{}^{125}_{53}\I+e^-_{\mathrm{ligado}}\longrightarrow{}^{125}_{52}\Te^*+\nu_e .\end{equation}
+La carga se conserva en el proceso completo; el número leptónico del electrón inicial es $+1$ y el del neutrino saliente también. El estado nuclear excitado de $^{125}$Te se desexcita principalmente por conversión interna; sólo una fracción minoritaria emite directamente el fotón gamma de $35.49$ keV. IAEA informa $T_{1/2}=59.408$ d, captura electrónica $100\%$, gamma de $35.49$ keV con probabilidad $6.68\%$ y conversión interna aproximadamente $93.32\%$ desde ese estado \cite{iaea125}. Una conversión interna expulsa un electrón atómico usando energía de la transición nuclear: \emph{no} es el electrón previamente capturado.
+
+\subsection{Balance de energía, sin simplificar electrones inexistentes}
+Definimos la diferencia de masas \emph{atómicas neutras} en el estado fundamental como $Q_{EC}=[M_a(^{125}\I)-M_a(^{125}\Te)]c^2$. Sea $E_*$ la excitación nuclear de $^{125}$Te, $B_i$ la energía de enlace de la capa de la que se capturó el electrón y $T_R$ la energía de retroceso. A primer orden, despreciando pequeñas correcciones atómicas,
+\begin{equation}E_{\nu,i}\simeq Q_{EC}-E_*-B_i-T_R.\label{eq:nu}\end{equation}
+Explicación de cada sustracción: $E_*$ queda almacenada inicialmente en el núcleo hijo; $B_i$ representa la vacante atómica; $T_R$ es cinética del átomo hijo que garantiza momento conservado. El neutrino y el átomo tienen momentos opuestos a primer orden en un decaimiento de dos cuerpos, de modo que $T_R=p_R^2/(2M_R)$. El valor $35.49$ keV identifica la transición nuclear, \emph{no} es la energía de cada electrón Auger. Una vacante en una capa interna se rellena desde otra capa; la diferencia puede salir como rayo X característico o transferirse a un electrón Auger. Vacantes posteriores generan una cascada. Energías, multiplicidades y destinos requieren un espectro atómico; el código de esta entrega no inventa uno.
+
+\subsection{¿Se queda el núcleo hijo unido al ADN?}
+La iododesoxiuridina marcada incorpora \emph{el átomo padre} en una molécula del ADN antes del decaimiento. En el instante de captura, el núcleo hijo $^{125}$Te nace en el mismo lugar inicial, pero \emph{su posición inicial no garantiza que el nuevo elemento permanezca unido}. Cambian el número atómico, la configuración electrónica y los enlaces posibles; la relajación emite electrones y puede originar cambios químicos. Para estimar una escala de retroceso sólo por el neutrino, si su energía fuera $0.12$ MeV y se despreciara su masa, $p_\nu c\simeq0.12$ MeV. Con $M_Rc^2\simeq125(931.5)$ MeV,
+\begin{equation}T_R\simeq\frac{(p_\nu c)^2}{2M_Rc^2}=\frac{(0.12\,\mathrm{MeV})^2}{2(125)(931.5\,\mathrm{MeV})}\simeq6.18\times10^{-8}\,\mathrm{MeV}\simeq0.062\,\mathrm{eV}.\end{equation}
+Los $0.12$ MeV son un \emph{ejemplo de neutrino supuesto}; la energía real depende de la capa capturada y el estado final según la ecuación (\ref{eq:nu}). Aun si el retroceso nuclear en este ejemplo es pequeño, no permite concluir la estabilidad de la unión química tras la transmutación y la ionización múltiple. Para hablar de daño local basta que la fuente estuviera allí \emph{cuando} se produjo la cascada; nuestro modelo no simula el destino posterior del Te. En beta menos de $^{131}$I el producto es xenón: tampoco se conserva por definición el mismo enlace químico después de transformarse en otro elemento.
+
+\subsection{Tiempo físico}
+Usamos $T_{1/2}=59.4$ d redondeado para reproducir la animación. La tasa por día es $\lambda_{125}=\ln2/59.4=0.011669\,\mathrm{d}^{-1}$ aproximadamente. Si un millón de núcleos permanecen localizados durante 1 día sin pérdida biológica, el número \emph{medio} de desintegraciones es $10^6(1-e^{-0.011669})\simeq11\,601$. No todos los núcleos de una administración real quedan en el ADN ni siguen esta permanencia ideal.
+
+\section{$^{131}$I: beta menos y un espectro continuo}
+El mecanismo nuclear es $n\to p+e^-+\bar\nu_e$, que aumenta $Z$ de 53 a 54 y conserva $A=131$:
+\begin{equation}{}^{131}_{53}\I\longrightarrow{}^{131}_{54}\Xe^*+e^-+\bar\nu_e .\end{equation}
+Para una rama hacia una excitación hija $E_*$, definimos $Q_\beta=[M_a(^{131}\I)-M_a(^{131}\Xe)]c^2$ con masas atómicas neutras y $Q_b=Q_\beta-E_*$. Despreciando retroceso en un primer esquema,
+\begin{align}Q_b&=T_e+E_{\bar\nu}+T_R,\\ E_{\bar\nu}&\simeq Q_b-T_e-T_R,\qquad 0\leq T_e\lesssim Q_b.\end{align}
+El electrón no tiene energía fija porque el antineutrino participa en el reparto. Para una transición permitida ideal, la dependencia \emph{esquemática} es
+\begin{equation}\frac{dN_b}{dT_e}\propto F(Z_f,T_e)\,p_e(T_e)\,\bigl(T_e+m_ec^2\bigr)\,(Q_b-T_e)^2\,C_b(T_e),\quad p_ec=\sqrt{T_e(T_e+2m_ec^2)}.\end{equation}
+Aquí $F$ corrige la interacción coulombiana, $C_b$ incorpora forma y reglas de transición, y $b$ es una rama nuclear concreta. El espectro completo sería la suma ponderada $dN/dT_e=\sum_b b_b(dN_b/dT_e)$; no se declara que la fórmula simplificada dé el espectro real completo de $^{131}$I. Su semivida es $8.021$ d según ICRP \cite{icrp}; la emisión gamma principal próxima a $364.5$ keV y la rama beta con extremo próximo a $606$ keV se documentan para este isótopo en IAEA \cite{iaea131}. $606$ keV es energía \emph{máxima de una rama}, no energía única ni energía media.
+
+La existencia de un electrón de mayor recorrido no implica igual probabilidad de daño por desintegración incorporada: localización, cascadas secundarias y geometría importan. La diapositiva de detección del curso discute pérdida de energía y alcance; sus ejemplos de pico de Bragg para hadrones no se transfieren sin más a los electrones beta, sujetos a dispersión y múltiples interacciones \cite{deteccion}.
+
+\section{Un átomo puede abandonar el ADN antes de decaer}
+Sea $n(t)$ la población media de átomos aún en ADN. Además del decaimiento con tasa $\lambda$, supongamos \emph{como hipótesis} una salida exponencial con tasa biológica $k$ [día$^{-1}$]. En $dt$, ambas vías son eventos competitivos: $dn=-(\lambda+k)n\,dt$, por lo que
+\begin{equation}n(t)=n_0e^{-(\lambda+k)t}.\end{equation}
+Las desintegraciones \emph{dentro del ADN} durante $dt$ son $dD_{ADN}=\lambda n(t)dt$. Integrando desde 0 hasta $t$:
+\begin{align}
+D_{ADN}(t)&=\int_0^t\lambda n_0e^{-(\lambda+k)s}\,ds\\
+&=\lambda n_0\left[\frac{-e^{-(\lambda+k)s}}{\lambda+k}\right]_0^t\\
+&=n_0\frac{\lambda}{\lambda+k}\left(1-e^{-(\lambda+k)t}\right).
+\end{align}
+Dividiendo por $n_0$ se obtiene $P(D_{ADN}\text{ antes de }t)$. Si $t\to\infty$, el término exponencial tiende a cero, y $P=\lambda/(\lambda+k)$. Sea $\tau_b$ el tiempo medio de residencia: $k=1/\tau_b$, \emph{no} $\ln2/\tau_b$. Con la hipótesis $\tau_b=2$ d, $k=0.5$ d$^{-1}$ y las tasas anteriores, obtenemos $P_{125}=0.0228$ y $P_{131}=0.1474$ aproximadamente. Estos porcentajes \emph{no} describen la biocinética de las células del artículo: ilustran el peso de una tasa competidora. \textbf{Chequeo:} $k=0$ da $P=1$; $\lambda\to0$ con $k>0$ da $P\to0$.
+
+\section{Geometría del ADN y modelo explícito de daño}
+\subsection{Escala y coordenadas}
+Para una sección ideal de $n=60$ pares de bases usamos radio de columna $R=1.0$ nm y avance axial $h=0.34$ nm por par (vuelta aproximada de 10 pb = 3.4 nm). Estas cifras fijan una \emph{hélice ilustrativa}, no la estructura atomística de un locus HPRT. Definimos $j=0,\ldots,n-1$, $j_c=\lfloor n/2\rfloor$ y $\theta_j=2\pi(j-j_c)/10$. Las dos columnas son
+\begin{equation}\mathbf x_{A,j}=(R\cos\theta_j,R\sin\theta_j,h(j-j_c)),\qquad
+\mathbf x_{B,j}=(-R\cos\theta_j,-R\sin\theta_j,h(j-j_c)).\end{equation}
+La fuente se ubica en $\mathbf s=(R+d,0,0)$: $d=0$ corresponde al borde de la hebra A en el par central, y $d>0$ mueve la fuente hacia afuera. La distancia euclidiana de fuente a cada sitio es $r_{X,j}=\|\mathbf x_{X,j}-\mathbf s\|$, para $X\in\{A,B\}$. \emph{No} se sustituyen pares de bases por nanómetros sin la conversión $h=0.34\nm/\mathrm{pb}$, y para pares opuestos a igual $j$ queda además separación transversal.
+
+\subsection{De un peso espacial a una Bernoulli de rotura}
+Introducimos el peso \emph{fenomenológico} $q_{X,j}=\exp(-r_{X,j}/\ell)$, donde $\ell=1.5$ nm es un parámetro \emph{elegido para explorar}, no ajustado al alcance observado en Martin y Haseltine. Supongamos oportunidades de lesión locales Poisson de media $\mu q_{X,j}$, con $\mu=0.48$ como escenario. La probabilidad de \emph{cero} oportunidades es $\exp(-\mu q_{X,j})$. Por complemento, la probabilidad de al menos una rotura del sitio es
+\begin{equation}\boxed{p_{X,j}=1-\exp[-\mu\exp(-r_{X,j}/\ell)].}\label{eq:ssb}\end{equation}
+Cada evento simulado genera una variable uniforme $U_{X,j}\sim\mathcal U(0,1)$ y marca rotura si $U_{X,j}<p_{X,j}$. Las Bernoulli se tratan como independientes \emph{condicionadas a} $d,\mu,\ell$. Una cascada real tiene correlaciones entre electrones y química acuosa; la independencia es un límite del modelo. No se asigna a cada oportunidad una energía en eV ni se convierte la expresión en un espectro Auger.
+
+\subsection{Criterio DSB y estimación Monte Carlo}
+La regla operativa usada aquí llama ``DSB'' a la existencia de dos roturas, una en A y otra en B, con $|j_A-j_B|\leq10$ pb. La ventana de 10 pb es una \emph{convención algorítmica declarada}; variarla cambia la clasificación. Para $N_{MC}$ eventos independientes con indicador $I_m(d)\in\{0,1\}$:
+\begin{equation}\widehat p_{DSB}(d)=\frac{1}{N_{MC}}\sum_{m=1}^{N_{MC}}I_m(d),\qquad
+\widehat{\mathrm{SEM}}=\sqrt{\frac{\widehat p(1-\widehat p)}{N_{MC}}}.\end{equation}
+El error estándar binomial estima \emph{variación de muestreo con parámetros fijos}. No incluye incertidumbre sobre $\ell$, $\mu$, la geometría o los mecanismos de reparación. Se emplea una semilla fija (2026) y números aleatorios comunes por escenario $d$, lo que facilita reproducir diferencias. Cada evento está condicionado a una desintegración en una posición elegida: $\widehat p_{DSB}$ \emph{no} es frecuencia medida de DSB por decaimiento del artículo.
+
+\subsection{Control analítico: rotura en cualquier sitio}
+Antes de estudiar las parejas DSB, existe una prueba cerrada del simulador. Denotemos por $B_{X,j}=0$ que el sitio no se rompió. Como las variables Bernoulli son independientes \emph{dentro de esta hipótesis}, la probabilidad de ninguna rotura en ningún sitio es el producto de todas las probabilidades complementarias:
+\begin{align}
+P(\text{sin roturas})&=\prod_{X\in\{A,B\}}\prod_{j=0}^{59}(1-p_{X,j})\\
+&=\prod_{X,j}\exp[-\mu\exp(-r_{X,j}/\ell)]\\
+&=\exp\left[-\mu\sum_{X,j}\exp(-r_{X,j}/\ell)\right].
+\end{align}
+Pasamos de producto a exponencial de suma porque $\prod e^{a_j}=e^{\sum a_j}$; tomando el complemento se obtiene $P(\text{alguna rotura})=1-\exp[-\mu\sum_{X,j}q_{X,j}]$. Con la fuente en $d=0$, la fórmula da $0.99693$ y el código obtuvo $0.99713$ en $15\,000$ eventos: la diferencia $0.00020$ es pequeña frente a su error binomial aproximado. Esto verifica el muestreo de roturas individuales \emph{según el modelo}, no valida la biofísica de los electrones reales.
+
+Una pareja opuesta concreta $(i,j)$, con $|i-j|\leq10$, tiene probabilidad $p_{A,i}p_{B,j}$ bajo la misma independencia. Al sumar esas probabilidades se obtiene el \emph{número medio de parejas}, no la probabilidad de al menos una DSB: un evento puede contener varias parejas. La desigualdad de la unión sólo asegura $P(DSB)\leq\sum_{|i-j|\leq10}p_{A,i}p_{B,j}$. Esta distinción explica por qué el algoritmo usa la función indicadora ``existe alguna pareja'', en vez de sumar cuentas de parejas como si fueran eventos separados.
+
+\subsection{Resultados del escenario base y sensibilidad}
+Los resultados reproducibles de \texttt{resultados/resumen\_modelo.json} para $N_{MC}=15\,000$, $\mu=0.48$, $\ell=1.5$ nm, semilla 2026, son:
+\begin{center}\small\begin{tabular}{rrrr}\toprule
+$d$ [nm]& $P(\text{cualquier rotura})$ & $\widehat P(DSB)$ & SEM$_{DSB}$ \\ \midrule
+0&0.99713&0.87000&0.00275\\
+1&0.98167&0.68847&0.00378\\
+2&0.90880&0.41560&0.00402\\
+4&0.55587&0.07180&0.00211\\
+7&0.12580&0.00200&0.00036\\ \bottomrule
+\end{tabular}\end{center}
+El error de muestreo al 95\% se aproximaría por $\widehat p\pm1.96\,SEM$ cuando la aproximación normal es adecuada; para probabilidades cercanas a cero conviene un intervalo binomial exacto o de Wilson. Ninguno de estos intervalos cubriría automáticamente la incertidumbre de $\ell$ y $\mu$.
+
+Hicimos un barrido intencional de \emph{hipótesis}, con $6\,000$ eventos por punto y la misma semilla. A $d=0$, si $\mu$ baja a $0.24$, $\widehat P(DSB)=0.531$; si sube a $0.96$, pasa a $0.993$. Con $\mu=0.48$ y $\ell=1.0$ nm, resulta $0.593$; con $\ell=2.0$ nm, $0.963$. En $d=4$ nm esas mismas alternativas producen $0.0217$, $0.2147$, $0.0032$ y $0.3003$, respectivamente. La variación excede por mucho los errores de muestreo: el modelo no fija una probabilidad biológica universal. El patrón \emph{dentro de cada escenario} es que la fuente más cercana da más parejas de roturas; la magnitud debe establecerse experimentalmente o con transporte microscópico validado.
+
+\begin{figure}[htbp]\centering\includegraphics[width=.92\textwidth]{../animaciones/04_roturas_agrupadas_portada.png}\caption{La regla sobre dos hebras y un barrido espacial con parámetros del modelo. La gráfica es un resultado simulado; no son datos experimentales.}\end{figure}
+
+\subsection{De energía a dosis: qué representa un gray}
+La energía absorbida $E_{abs}$ dividida por una masa $m$ define $D=E_{abs}/m$ y $1\,\mathrm{Gy}=1\,\mathrm{J\,kg^{-1}}$. Para un volumen de agua ideal esférico, $m=\rho(4\pi/3)r^3$. Si \emph{hipotéticamente} se depositara $1$ keV entero en una esfera de agua de radio $2$ nm, se obtendría $E=10^3(1.602176634\times10^{-19})=1.602176634\times10^{-16}$ J, $m=(10^3\,\mathrm{kg\,m^{-3}})(4\pi/3)(2\times10^{-9}\,\mathrm m)^3=3.3510\times10^{-23}$ kg y $D\simeq4.78\times10^6$ Gy para \emph{esa masa y ese único evento supuesto}. Ese valor no es una dosis terapéutica, no significa que un electrón real deposite íntegramente 1 keV ahí, y no se compara con una dosis celular promedio sin especificar el volumen y el reparto de energía. Precisamente muestra por qué la escala del volumen debe escribirse cuando se calcula un gray.
+
+\section{Después del daño: tres destinos que compiten}
+Sea $L(t)$ la fracción de lesiones aún presentes y $R(t)$, $M(t)$, $C(t)$ las fracciones acumuladas que ya han pasado a reparación, mutación fijada y pérdida celular. El tiempo está en horas y las tasas \emph{hipotéticas} $k_r=0.20$, $k_m=0.02$, $k_c=0.03$ h$^{-1}$. Este $k_m$ es \emph{otro parámetro} distinto de la pendiente de mutación observada en HPRT. Con $K=k_r+k_m+k_c=0.25$ h$^{-1}$:
+\begin{align}
+\frac{dL}{dt}&=-KL,&L(0)&=1,\\
+\frac{dR}{dt}&=k_rL,&\frac{dM}{dt}&=k_mL,&\frac{dC}{dt}&=k_cL.
+\end{align}
+Integramos: $L(t)=e^{-Kt}$ y $R(t)=k_r\int_0^t e^{-Ks}ds=(k_r/K)(1-e^{-Kt})$; sustituyendo $k_r$ por $k_m,k_c$ obtenemos $M(t),C(t)$. Sumando,
+\begin{equation}L+R+M+C=e^{-Kt}+\frac{k_r+k_m+k_c}{K}(1-e^{-Kt})=1.\end{equation}
+En el límite $t\to\infty$ el destino simulado se reparte $80\%$, $8\%$, $12\%$. Son fracciones \emph{asumidas por las tasas}, no prevalencias reales de lesiones ni una calibración humana. ``Mutación fijada'' exige supervivencia y cambios heredables en descendientes celulares: la animación representa la distinción, no reemplaza experimentos de linaje y secuenciación.
+
+\section{Del locus HPRT a un conteo interpretable}\label{sec:hprt}
+Una rotura observada en ADN no demuestra una mutación heredable; una mutación HPRT se evalúa con una selección y la frecuencia de mutantes entre células clonables. El experimento del artículo registra mutantes en el locus \emph{hprt} y distingue la muerte celular de esta variable \cite{whaley}.
+\textbf{Dos enzimas, dos funciones:} la timidina cinasa (TK) controla la incorporación del análogo IdUrd; la hipoxantina--guanina fosforribosiltransferasa (HPRT) participa en la vía de rescate de purinas y permite seleccionar células resistentes a 6-tioguanina cuando se pierde la función correspondiente. TK6 y SE30 comparan la primera ruta; la medición de mutantes HPRT explora otro locus. No sería correcto afirmar que ``SE30 tiene mutado HPRT'' por ser deficiente en TK. HPRT1 humano se encuentra en el cromosoma X \cite{gene}; O'Neill, Sullivan y Albertini describieron un ensayo de clonación con 6-tioguanina y corrección por capacidad de clonación en células humanas \cite{oneill}. Este apoyo metodológico no demuestra que el procedimiento exacto de cultivo de Whaley y Little usara idénticas concentraciones o tiempos.
+
+Si $n$ células se siembran por pocillo y cada célula tiene probabilidad efectiva $f\,\varepsilon$ de producir un clon resistente, donde $f$ es la frecuencia de mutantes y $\varepsilon$ es su eficiencia de clonación bajo selección, entonces para eventos raros la cantidad de clones resistentes por pocillo se modela como Poisson con media $nf\varepsilon$. La probabilidad de un pocillo sin clon es $P_0=e^{-nf\varepsilon}$. Aplicando logaritmo a ambos lados: $\ln P_0=-nf\varepsilon$, de donde
+\begin{equation}\boxed{f=-\frac{\ln P_0}{n\varepsilon}.}\end{equation}
+Esta expresión ilustra por qué contar sólo pocillos positivos no basta: deben conocerse el número sembrado y la eficiencia de clonación, y debe permitirse expresión fenotípica. El programa de esta entrega parte \emph{ya} de un número de células clonables y usa Poisson para ilustrar repeticiones; no reconstruye los datos crudos del artículo.
+
+Para modelar un conteo simplificado con $n$ células clonables y frecuencia de fondo $f_0$, usamos
+\begin{equation}f_{TK6}(D)=f_0+\alpha D,\qquad \alpha=0.45\times10^{-6}\,\mathrm{cGy}^{-1},\qquad D\ \text{en cGy}.\end{equation}
+La pendiente $\alpha$ corresponde a $^{131}$IIdUrd en TK6 del artículo; el fondo $f_0$ no está informado aquí y en la simulación se \emph{elige} $10\times10^{-6}$. El exceso de frecuencia a $D=38$ cGy es
+\begin{align}
+\Delta f&=\alpha D=(0.45\times10^{-6}\,\mathrm{cGy}^{-1})(38\,\mathrm{cGy})\\
+&=17.1\times10^{-6}=17.1\text{ mutantes inducidos por millón de células clonables},\\
+38\,\mathrm{cGy}&=0.38\,\mathrm{Gy},\qquad \alpha=45\times10^{-6}\,\mathrm{Gy}^{-1}.
+\end{align}
+Se cambió la unidad porque $1$ Gy $=100$ cGy; para mantener $\alpha D$ idéntico, el valor numérico de $\alpha$ por Gy se multiplica por $100$. La cifra $17.1$ es una \textbf{extrapolación de TK6} en un nivel de dosis mencionado para SE30, no una medición directa de TK6 a 38 cGy y tampoco una tasa de mutación del genoma completo. El modelo opcional de réplicas toma $Y_0\sim\mathrm{Poisson}(nf_0)$ y $Y_D\sim\mathrm{Poisson}(n(f_0+\alpha D))$; por independencia, $E[Y_D-Y_0]=n\alpha D$ y $\mathrm{Var}(Y_D-Y_0)=n(2f_0+\alpha D)$. El número de células \emph{clonables} se presupone, no se infiere de supervivencia.
+
+\section{Resultados reproducibles y lectura de las seis animaciones}
+Ejecutar \texttt{python codigo/modelo.py} produce \texttt{resultados/resumen\_modelo.json}. Ejecutar \texttt{python codigo/animar.py} produce seis MP4 de 1280$\times$720 a 20 fps, un vídeo unido y seis portadas PNG. Cada vídeo dura aproximadamente 7 s; se recomienda pausar el vídeo y explicar la variable indicada. Los cuadros ilustran mecanismos, no una filmación real ni trayectorias calculadas con Geant4.
+
+\begin{longtable}{p{.24\textwidth}p{.32\textwidth}p{.35\textwidth}}\toprule Escena & Lo que cambia realmente & Qué explicar frente al público \\ \midrule\endhead
+01 Captura y Auger & Representación de I-125 a Te-125 con vacante y cascada. & Conservación de $A$ y $Z$, captura de electrón ligado, excitación y Auger; el movimiento audiovisual no es un tiempo físico. \\
+02 Semividas & $N/N_0=e^{-\lambda t}$; ejemplo de salida con $k=0.5$ d$^{-1}$. & Dos escalas temporales, fracción que decae antes de salir, diferencia entre $T_{1/2}$ y residencia. \\
+03 Distancia & $q(r)=e^{-r/\ell}$, con $\ell=1.5$ nm hipotético. & El perfil sirve al modelo; no es el alcance medido de un electrón ni una curva experimental. \\
+04 Dos hebras & Simulación de Eq. (\ref{eq:ssb}) y ventana de 10 pb. & Rotura simple frente a rotura doble; frecuencia condicional y error de muestreo. \\
+05 Destinos & $L,R,M,C$ con suma unitaria. & Daño, reparación, fijación y pérdida son variables distintas; tasas ilustrativas. \\
+06 HPRT humano & TK6/SE30, pendiente publicada de I-131. & ¿Qué se midió? ¿Qué se extrapoló? ¿Qué no se puede inferir sobre una persona? \\
+\bottomrule\end{longtable}
+
+\section{Vínculo preciso con el programa}
+Las diapositivas proporcionadas de \emph{Decays and scattering} tratan estados inestables, tasa, semivida, actividad, modos y razón de ramificación: aparecen en las secciones 3--5 \cite{curso}. La presentación \emph{Particle Detection--part 2} introduce pérdida de energía y alcance de partículas en materia: motiva nuestra discusión sobre deposición de energía y límites de un modelo de electrones \cite{deteccion}. La física de interacciones débiles aparece en la transformación nuclear beta/captura, mientras la relajación electromagnética permite distinguir rayos X, gamma y Auger. No se usan QCD, modelo de capas, Proca o diagramas de Feynman como adornos: no son necesarios para responder esta pregunta. El ensayo HPRT entra como medición biológica posterior y no sustituye una medida de energía de detector.
+
+\section{Utilidad, analogías prudentes y limitaciones}
+\textbf{Utilidad científica:} seleccionar blancos subcelulares para estudiar emisores Auger; priorizar medidas de incorporación, distribución y permanencia antes de convertir Bq en efecto; distinguir un biomarcador de daño (roturas) de un desenlace tardío (mutación). \textbf{Símil de actualidad:} una radioterapia con radiofármaco dirigido al núcleo exige saber dónde queda cada fuente; las exposiciones por accidentes nucleares requieren otras vías de entrada, metabolismo y distribución. Los resultados de IdUrd en cultivo no cuantifican las consecuencias sanitarias de Chernóbil, bombas atómicas o radioyodo convencional, ni se extrapolan a personas sin datos de órganos y dosis.
+
+\textbf{Límites del estudio:} (i) las líneas celulares humanas no son una cohorte de pacientes; (ii) la actividad y la dosis al núcleo no identifican por sí solas una secuencia genómica mutada; (iii) la hélice representada contiene 60 pb ideales, no el genoma humano; (iv) el modelo espacial usa un núcleo de probabilidad elegido, independencia de sitios y un criterio operacional DSB; (v) la tasa de residencia, las tasas celulares y el fondo HPRT del código son escenarios; (vi) los vídeos muestran un relato de mecanismos y no mediciones en tiempo real. El experimento de LeMotte y Little encontró aproximadamente una rotura doble por desintegración $^{125}$I bajo condiciones congeladas \cite{lemotte}; \emph{esa} medida no valida las probabilidades numéricas de nuestro código para una hélice aislada. La corrección de Schmitz y colaboradores subrayó además que una rotura doble no se convierte automáticamente en aberración cromosómica: sus datos revisados dieron en promedio unas 250 desintegraciones por aberración bajo sus condiciones experimentales \cite{corrigendum}.
+
+\section{Conclusión defendible}
+Las ecuaciones nucleares y la ley de decaimiento describen \emph{cuándo y qué} se emite. La geometría y la permanencia modifican \emph{dónde} se deposita energía. Reparación, supervivencia y selección experimental determinan \emph{qué efecto final se observa}. En cultivos humanos TK6/SE30, Whaley y Little encontraron una diferencia clara entre radionúclidos incorporados y actividad extracelular \cite{whaley}. Nuestro modelo muestra una vía consistente para pensar esa diferencia y expone los datos necesarios para verificarla con mayor fidelidad, sin reclamar una predicción clínica o genómica que los datos no sustentan.
+
+\appendix\section{Guía de defensa breve: preguntas y respuestas}
+\begin{enumerate}[leftmargin=*]
+\item \textbf{¿Por qué captura electrónica no es beta menos?} En EC, un protón capta un electrón ligado y $Z$ baja; en beta menos, un neutrón produce electrón y antineutrino y $Z$ sube.
+\item \textbf{¿$^{125}$I emite electrones monoenergéticos?} La captura deja vacantes y puede iniciar conversiones y cascadas de energía diversa; un dibujo con seis rayos no representa seis electrones con la misma energía.
+\item \textbf{¿Por qué 38 cGy dan 17.1 mutantes?} Multiplicamos la pendiente TK6 del artículo por 38 cGy como \emph{ejercicio extrapolado}; 38 cGy se menciona para el control SE30.
+\item \textbf{¿Si un DSB ocurre, ya hay mutación?} No. Debe intervenir reparación, supervivencia y fijación; un daño puede desaparecer o matar la célula.
+\item \textbf{¿Qué validarían más experimentos?} Dependencia de daño con posición del radionúclido, espectro electrónico real, dosimetría celular, supervivencia y secuenciación de clones supervivientes.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{whaley} J. M. Whaley y J. B. Little, ``Efficient mutation induction by $^{125}$I and $^{131}$I decays in DNA of human cells'', \emph{Radiat. Res.} 123 (1990) 68--74. \href{https://pubmed.ncbi.nlm.nih.gov/2371380/}{PMID 2371380}. DOI: \href{https://doi.org/10.2307/3577659}{10.2307/3577659}.
+\bibitem{martin} R. F. Martin y W. A. Haseltine, ``Range of radiochemical damage to DNA with decay of iodine-125'', \emph{Science} 213 (1981) 896--898. \href{https://pubmed.ncbi.nlm.nih.gov/7256283/}{PMID 7256283}. DOI: \href{https://doi.org/10.1126/science.7256283}{10.1126/science.7256283}.
+\bibitem{lemotte} P. K. LeMotte y J. B. Little, ``DNA damage induced in human diploid cells by decay of incorporated radionuclides'', \emph{Cancer Res.} 44 (1984) 1337--1342. \href{https://pubmed.ncbi.nlm.nih.gov/6704953/}{PMID 6704953}.
+\bibitem{oneill} J. P. O'Neill, L. M. Sullivan y R. J. Albertini, ``In vitro induction, expression and selection of thioguanine-resistant mutants with human T-lymphocytes'', \emph{Mutat. Res.} 240 (1990) 135--142. \href{https://pubmed.ncbi.nlm.nih.gov/2300074/}{PMID 2300074}. DOI: \href{https://doi.org/10.1016/0165-1218(90)90017-V}{10.1016/0165-1218(90)90017-V}.
+\bibitem{gene} NCBI Gene, \emph{HPRT1 hypoxanthine phosphoribosyltransferase 1 [Homo sapiens]}, Gene ID 3251, \url{https://www.ncbi.nlm.nih.gov/gene/3251}.
+\bibitem{iaea125} IAEA, \emph{IAEA-TECDOC-1340}, ficha de $^{125}$I, sección 75. \url{https://www-pub.iaea.org/MTCD/publications/PDF/te_1340_web.pdf}.
+\bibitem{icrp} ICRP, \emph{Publication 137}, Occupational Intakes of Radionuclides, parte 3 (2017), tabla de semividas de yodo. \url{https://doi.org/10.1177/0146645317734963}.
+\bibitem{iaea131} IAEA, \emph{IAEA-TECDOC-1608}, sección 12.3, propiedades de $^{131}$I. \url{https://www-pub.iaea.org/MTCD/Publications/PDF/te_1608_web.pdf}.
+\bibitem{corrigendum} S. Schmitz et al., ``Corrigendum to `Chromosome aberrations induced by the Auger electron emitter $^{125}$I''', \emph{Mutat. Res.} 800--801 (2016) 46. \href{https://doi.org/10.1016/j.mrgentox.2016.03.003}{DOI 10.1016/j.mrgentox.2016.03.003}.
+\bibitem{curso} C. Sandoval, \emph{Introducción a la física subatómica: Decays and scattering}, diapositivas de curso, Universidad Nacional de Colombia, 2025-1 (material aportado por el estudiante).
+\bibitem{deteccion} C. Sandoval, \emph{Introducción a la física subatómica: Particle Detection--part 2}, diapositivas de curso, Universidad Nacional de Colombia, 2025-1 (material aportado por el estudiante).
+\end{thebibliography}
+\end{document}
