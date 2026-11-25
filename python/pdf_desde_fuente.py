@@ -14,10 +14,12 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import BaseDocTemplate,Frame,Image,PageBreak,PageTemplate,Paragraph,Spacer,Table,TableStyle
 
 ROOT=Path(__file__).resolve().parents[1]
-DOC=ROOT/'documento'
+DOC=ROOT/'documentacion'
 PDF=DOC/'Guia_Proyecto_ADN_Subatomica.pdf'
-PLAIN=DOC/'_lectura_pandoc.txt'
-FORMULAS=DOC/'formulas'
+BUILD=DOC/'.build'
+BUILD.mkdir(exist_ok=True)
+PLAIN=BUILD/'_lectura_pandoc.txt'
+FORMULAS=BUILD/'formulas'
 FORMULAS.mkdir(exist_ok=True)
 citations={'whaley':'Whaley y Little, 1990','martin':'Martin y Haseltine, 1981',
  'lemotte':'LeMotte y Little, 1984','iaea125':'IAEA, TECDOC-1340',
@@ -161,7 +163,7 @@ for part in parts:
                   ('GRID',(0,0),(-1,-1),.4,colors.HexColor('#B4C9C9')),('VALIGN',(0,0),(-1,-1),'TOP'),
                   ('LEFTPADDING',(0,0),(-1,-1),6),('TOPPADDING',(0,0),(-1,-1),4)]))
                 story.extend([visual,Spacer(1,11)])
-            if section_num==7:story.append(Image(str(ROOT/'animaciones'/'04_roturas_agrupadas_portada.png'),width=475,height=267))
+            if section_num==7:story.append(Image(str(ROOT/'media'/'04_roturas_agrupadas_portada.png'),width=475,height=267))
             continue
         if line in SUBSECTIONS:
             story.append(parag(line,'h2'))

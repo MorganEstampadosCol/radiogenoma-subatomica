@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+documentacion/*.aux
+documentacion/*.log
+documentacion/*.out
+documentacion/*.toc
+documentacion/.build/
+tests/screenshot_*.png

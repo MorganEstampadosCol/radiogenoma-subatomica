@@ -21,3 +21,9 @@ jobs:
         run: python -m pip install numpy
       - name: Controles numéricos del modelo original
         run: python python/verificar.py
+      - name: Preparar navegador para pruebas visuales
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Interacción y adaptación móvil
+        run: python tests/browser_smoke.py

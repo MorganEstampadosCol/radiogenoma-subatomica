@@ -45,6 +45,19 @@ export function scoreDsb(aBreaks,bBreaks,maxSeparationBp=PHYSICS.DSB_MAX_SEPARAT
       if(bBreaks[j])return true;
   }return false;
 }
+/** Par observado de roturas con la menor separación longitudinal, si existe. */
+export function closestBreakPair(aBreaks,bBreaks){
+  let pair=null;
+  for(let i=0;i<aBreaks.length;i++){
+    if(!aBreaks[i])continue;
+    for(let j=0;j<bBreaks.length;j++){
+      if(!bBreaks[j])continue;
+      const separation=Math.abs(i-j);
+      if(pair===null||separation<pair.separation)pair={a:i,b:j,separation};
+    }
+  }
+  return pair;
+}
 export function seededRandom(seed=2026){let s=seed>>>0;return function(){s+=0x6D2B79F5;let t=s;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
 export function sampleOneEvent(offsetNm=0,mu=0.48,ellNm=1.5,seed=2026){
   const rng=seededRandom(seed),{pa,pb}=siteProbabilities(offsetNm,mu,ellNm);

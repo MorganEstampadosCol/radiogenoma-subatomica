@@ -2,14 +2,16 @@
 Opcional: pip install playwright; requiere navegador Chromium instalado.
 """
 from pathlib import Path
-import re,base64
+import re,base64,os
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1]
 PAGES=['index.html','01-captura-auger.html','02-semividas-retencion.html','03-distancia-adn.html','04-roturas-agrupadas.html','05-reparacion-mutacion.html','06-experimento-hprt.html']
 css=re.sub(r"@import url\('.*?'\);",'',(ROOT/'styles.css').read_text(),count=1)
 science_data='data:text/javascript;base64,'+base64.b64encode((ROOT/'science.js').read_bytes()).decode()
 with sync_playwright() as p:
- browser=p.chromium.launch(headless=True,executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+ launch={'headless':True,'args':['--no-sandbox']}
+ if os.environ.get('CHROMIUM_PATH'):launch['executable_path']=os.environ['CHROMIUM_PATH']
+ browser=p.chromium.launch(**launch)
  for w,h in [(1440,900),(390,844)]:
   page=browser.new_page(viewport={'width':w,'height':h},device_scale_factor=1)
   errors=[]

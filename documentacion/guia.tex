@@ -159,7 +159,7 @@ Pasamos de producto a exponencial de suma porque $\prod e^{a_j}=e^{\sum a_j}$; t
 Una pareja opuesta concreta $(i,j)$, con $|i-j|\leq10$, tiene probabilidad $p_{A,i}p_{B,j}$ bajo la misma independencia. Al sumar esas probabilidades se obtiene el \emph{número medio de parejas}, no la probabilidad de al menos una DSB: un evento puede contener varias parejas. La desigualdad de la unión sólo asegura $P(DSB)\leq\sum_{|i-j|\leq10}p_{A,i}p_{B,j}$. Esta distinción explica por qué el algoritmo usa la función indicadora ``existe alguna pareja'', en vez de sumar cuentas de parejas como si fueran eventos separados.
 
 \subsection{Resultados del escenario base y sensibilidad}
-Los resultados reproducibles de \texttt{resultados/resumen\_modelo.json} para $N_{MC}=15\,000$, $\mu=0.48$, $\ell=1.5$ nm, semilla 2026, son:
+Los resultados de referencia en \texttt{documentacion/resumen\_modelo.json} para $N_{MC}=15\,000$, $\mu=0.48$, $\ell=1.5$ nm, semilla 2026, son:
 \begin{center}\small\begin{tabular}{rrrr}\toprule
 $d$ [nm]& $P(\text{cualquier rotura})$ & $\widehat P(DSB)$ & SEM$_{DSB}$ \\ \midrule
 0&0.99713&0.87000&0.00275\\
@@ -172,7 +172,7 @@ El error de muestreo al 95\% se aproximaría por $\widehat p\pm1.96\,SEM$ cuando
 
 Hicimos un barrido intencional de \emph{hipótesis}, con $6\,000$ eventos por punto y la misma semilla. A $d=0$, si $\mu$ baja a $0.24$, $\widehat P(DSB)=0.531$; si sube a $0.96$, pasa a $0.993$. Con $\mu=0.48$ y $\ell=1.0$ nm, resulta $0.593$; con $\ell=2.0$ nm, $0.963$. En $d=4$ nm esas mismas alternativas producen $0.0217$, $0.2147$, $0.0032$ y $0.3003$, respectivamente. La variación excede por mucho los errores de muestreo: el modelo no fija una probabilidad biológica universal. El patrón \emph{dentro de cada escenario} es que la fuente más cercana da más parejas de roturas; la magnitud debe establecerse experimentalmente o con transporte microscópico validado.
 
-\begin{figure}[htbp]\centering\includegraphics[width=.92\textwidth]{../animaciones/04_roturas_agrupadas_portada.png}\caption{La regla sobre dos hebras y un barrido espacial con parámetros del modelo. La gráfica es un resultado simulado; no son datos experimentales.}\end{figure}
+\begin{figure}[htbp]\centering\includegraphics[width=.92\textwidth]{../media/04_roturas_agrupadas_portada.png}\caption{La regla sobre dos hebras y un barrido espacial con parámetros del modelo. La gráfica es un resultado simulado; no son datos experimentales.}\end{figure}
 
 \subsection{De energía a dosis: qué representa un gray}
 La energía absorbida $E_{abs}$ dividida por una masa $m$ define $D=E_{abs}/m$ y $1\,\mathrm{Gy}=1\,\mathrm{J\,kg^{-1}}$. Para un volumen de agua ideal esférico, $m=\rho(4\pi/3)r^3$. Si \emph{hipotéticamente} se depositara $1$ keV entero en una esfera de agua de radio $2$ nm, se obtendría $E=10^3(1.602176634\times10^{-19})=1.602176634\times10^{-16}$ J, $m=(10^3\,\mathrm{kg\,m^{-3}})(4\pi/3)(2\times10^{-9}\,\mathrm m)^3=3.3510\times10^{-23}$ kg y $D\simeq4.78\times10^6$ Gy para \emph{esa masa y ese único evento supuesto}. Ese valor no es una dosis terapéutica, no significa que un electrón real deposite íntegramente 1 keV ahí, y no se compara con una dosis celular promedio sin especificar el volumen y el reparto de energía. Precisamente muestra por qué la escala del volumen debe escribirse cuando se calcula un gray.
@@ -206,7 +206,7 @@ La pendiente $\alpha$ corresponde a $^{131}$IIdUrd en TK6 del artículo; el fond
 Se cambió la unidad porque $1$ Gy $=100$ cGy; para mantener $\alpha D$ idéntico, el valor numérico de $\alpha$ por Gy se multiplica por $100$. La cifra $17.1$ es una \textbf{extrapolación de TK6} en un nivel de dosis mencionado para SE30, no una medición directa de TK6 a 38 cGy y tampoco una tasa de mutación del genoma completo. El modelo opcional de réplicas toma $Y_0\sim\mathrm{Poisson}(nf_0)$ y $Y_D\sim\mathrm{Poisson}(n(f_0+\alpha D))$; por independencia, $E[Y_D-Y_0]=n\alpha D$ y $\mathrm{Var}(Y_D-Y_0)=n(2f_0+\alpha D)$. El número de células \emph{clonables} se presupone, no se infiere de supervivencia.
 
 \section{Resultados reproducibles y lectura de las seis animaciones}
-Ejecutar \texttt{python codigo/modelo.py} produce \texttt{resultados/resumen\_modelo.json}. Ejecutar \texttt{python codigo/animar.py} produce seis MP4 de 1280$\times$720 a 20 fps, un vídeo unido y seis portadas PNG. Cada vídeo dura aproximadamente 7 s; se recomienda pausar el vídeo y explicar la variable indicada. Los cuadros ilustran mecanismos, no una filmación real ni trayectorias calculadas con Geant4.
+Desde la raíz del repositorio, ejecutar \texttt{python python/modelo.py} produce \texttt{resultados/resumen\_modelo.json}. Ejecutar \texttt{python python/animar.py} produce seis MP4 de 1280$\times$720 a 20 fps, un vídeo unido y seis portadas PNG. Cada vídeo dura aproximadamente 7 s; se recomienda pausar el vídeo y explicar la variable indicada. Los cuadros ilustran mecanismos, no una filmación real ni trayectorias calculadas con Geant4.
 
 \begin{longtable}{p{.24\textwidth}p{.32\textwidth}p{.35\textwidth}}\toprule Escena & Lo que cambia realmente & Qué explicar frente al público \\ \midrule\endhead
 01 Captura y Auger & Representación de I-125 a Te-125 con vacante y cascada. & Conservación de $A$ y $Z$, captura de electrón ligado, excitación y Auger; el movimiento audiovisual no es un tiempo físico. \\

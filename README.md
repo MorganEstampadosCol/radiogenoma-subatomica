@@ -2,7 +2,7 @@
 
 **Cuando un núcleo decae dentro del ADN humano** — proyecto de Física Subatómica, Universidad Nacional de Colombia, noviembre de 2026.
 
-Una web estática, adaptable al móvil y compatible con **GitHub Pages**, con portada editorial, doble hélice animada en Canvas 2D, seis laboratorios ajustables, seis MP4 originales y un desarrollo matemático en PDF, LaTeX y Python. **No requiere servidor, base de datos, claves ni compilación.**
+Una web estática, adaptable al móvil y compatible con **GitHub Pages**, con portada editorial, doble hélice animada en Canvas 2D, seis laboratorios ajustables, seis MP4 originales y un desarrollo matemático en PDF, LaTeX y Python. **No requiere servidor, base de datos, claves ni compilación para visitar el atlas.**
 
 ## Recorrido propuesto
 
@@ -46,7 +46,11 @@ RADIOGENOMA_GitHubPages/
 └── .nojekyll                    ← GitHub Pages publica todo el sitio tal cual
 ```
 
-## Publicarlo en GitHub Pages
+## Sitio publicado
+
+[Abrir el atlas RadioGenoma](https://morganestampadoscol.github.io/radiogenoma-subatomica/). GitHub Pages sirve las páginas desde la raíz de la rama `main`.
+
+## Publicarlo de nuevo en GitHub Pages
 
 **Si se acaba de crear un repositorio nuevo, se recomienda hacerlo público para que la web sea accesible a cualquiera**. No se debe modificar ni reutilizar ningún repositorio comercial preexistente.
 
@@ -80,7 +84,7 @@ python python/modelo.py
 python python/animar.py
 ```
 
-**Nota:** el modelo original guarda sus resultados en `resultados/` al ejecutarse. El archivo de referencia que acompaña esta entrega está conservado en `documentacion/resumen_modelo.json`. Las animaciones MP4 incluidas ya están codificadas; regenerarlas requiere FFmpeg instalado.
+**Nota:** el modelo original guarda sus resultados en `resultados/` al ejecutarse. El archivo de referencia que acompaña esta entrega está conservado en `documentacion/resumen_modelo.json`. Las animaciones MP4 incluidas ya están codificadas; regenerarlas requiere FFmpeg instalado. Para compilar la fuente LaTeX desde `documentacion/`, usa `pdflatex guia.tex` dos veces.
 
 ## Qué calculan realmente las seis escenas
 
@@ -111,9 +115,9 @@ La reparación se representa como tres salidas competitivas de una lesión inici
 
 ## Validación
 
-- Pruebas JavaScript: **7** controles de tasas, semivida, conservación, geometría, muestreo y unidades.
+- Pruebas JavaScript: **8** controles de tasas, semivida, conservación, geometría, muestreo, presentación coherente de roturas y unidades.
 - Pruebas Python originales: **5** controles, con modelo reproducible.
 - Prueba automatizada de enlaces locales: `python tests/check_links.py`.
-- Prueba de interfaz: `python tests/browser_smoke.py` (opcional; usa Chromium + Playwright), realizada para tamaños **1440 × 900** y **390 × 844**.
+- Prueba de interfaz: `python tests/browser_smoke.py` (usa Chromium + Playwright), cubre tamaños **1440 × 900** y **390 × 844** y se ejecuta en GitHub Actions. Localmente se instala con `python -m pip install playwright && python -m playwright install chromium`.
 
 Material preparado como proyecto educativo de Física Subatómica, no como producto sanitario o calculadora de riesgos.

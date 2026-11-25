@@ -1,4 +1,4 @@
-import {PHYSICS,survival,decayInDna,siteProbabilities,monteCarlo,anyBreakAnalytic,sampleOneEvent,fates,hprtInduced,poisson,seededRandom} from './science.js';
+import {PHYSICS,survival,decayInDna,siteProbabilities,monteCarlo,anyBreakAnalytic,sampleOneEvent,closestBreakPair,fates,hprtInduced,poisson,seededRandom} from './science.js';
 const scene=document.body.dataset.scene;
 const canvas=document.getElementById('science-canvas');
 const controlRoot=document.getElementById('control-fields');
@@ -15,16 +15,17 @@ const configs={
  '06':{sliders:[['dosis','Dosis nuclear (escenario TK6)',0,40,1,38,' cGy'],['celulas','Células clonables hipotéticas',.5,5,.5,1,' millones']],action:'Simular recuento ilustrativo',flag:'Pendiente experimental TK6; dosis y fondo del ejemplo son supuestos'}
 };
 const cfg=configs[scene],state={},fmt=(v,d=1)=>Number(v).toLocaleString('es-CO',{maximumFractionDigits:d,minimumFractionDigits:0});
+const millionUnit=(n)=>`${fmt(n,1)} ${n===1?'millón':'millones'}`;
 let rerolls=0,initTime=performance.now(),stats=null,one=null,counts=null;
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function createSliders(){for(const [key,label,min,max,step,initial,unit] of cfg.sliders){state[key]=initial;const wrap=document.createElement('div');wrap.className='slider-field';
  const header=document.createElement('div');header.className='slider-head';const name=document.createElement('label');const id='range-'+key;name.setAttribute('for',id);name.textContent=label;
  const value=document.createElement('strong');value.id=id+'-value';header.append(name,value);
  const input=document.createElement('input');input.id=id;input.type='range';input.min=min;input.max=max;input.step=step;input.value=initial;input.setAttribute('aria-label',label);
- const endpoints=document.createElement('div');endpoints.className='scale';endpoints.innerHTML=`<span>${fmt(min,2)}${unit}</span><span>${fmt(max,2)}${unit}</span>`;
- wrap.append(header,input,endpoints);controlRoot.appendChild(wrap);const update=()=>{state[key]=Number(input.value);value.textContent=fmt(state[key],3)+unit;refresh()};input.addEventListener('input',update);value.textContent=fmt(initial,3)+unit;}}
+ const endpoints=document.createElement('div');endpoints.className='scale';endpoints.innerHTML=`<span>${key==='celulas'?millionUnit(min):fmt(min,2)+unit}</span><span>${key==='celulas'?millionUnit(max):fmt(max,2)+unit}</span>`;
+ wrap.append(header,input,endpoints);controlRoot.appendChild(wrap);const update=()=>{state[key]=Number(input.value);value.textContent=key==='celulas'?millionUnit(state[key]):fmt(state[key],3)+unit;refresh()};input.addEventListener('input',update);value.textContent=key==='celulas'?millionUnit(initial):fmt(initial,3)+unit;}}
 const action=document.getElementById('control-action');action.textContent=cfg.action;action.addEventListener('click',()=>{
- if(scene==='01'){initTime=performance.now()}else if(scene==='04'||scene==='06'){rerolls++}else{for(const [key,_,min,max,step,initial] of cfg.sliders){state[key]=initial;const i=document.getElementById('range-'+key);i.value=initial;document.getElementById('range-'+key+'-value').textContent=fmt(initial,3)+(cfg.sliders.find(s=>s[0]===key)[6]||'')}}refresh();});
+ if(scene==='01'){initTime=performance.now()}else if(scene==='04'||scene==='06'){rerolls++}else{for(const [key,_,min,max,step,initial] of cfg.sliders){state[key]=initial;const i=document.getElementById('range-'+key);i.value=initial;document.getElementById('range-'+key+'-value').textContent=key==='celulas'?millionUnit(initial):fmt(initial,3)+(cfg.sliders.find(s=>s[0]===key)[6]||'')}}refresh();});
 function refresh(){
  switch(scene){
  case '01':mainOutput.textContent='¹²⁵I → ¹²⁵Te';subOutput.textContent='Captura electrónica, neutrino electrónico y relajación atómica Auger';break;
@@ -32,7 +33,7 @@ function refresh(){
  case '03':{stats=monteCarlo(state.distancia,state.mu,state.ell,3500,2026);mainOutput.textContent=fmt(stats.dsb*100,1)+' %';subOutput.textContent=`DSB por desintegración simulada ± ${fmt(stats.sem*100,2)} pp (1 error estándar; n = 3500)`;break;}
  case '04':{stats=monteCarlo(state.distancia,state.mu,1.5,3500,2026);one=sampleOneEvent(state.distancia,state.mu,1.5,2026+rerolls*97);mainOutput.textContent=one.dsb?'DSB en esta muestra':'Sin DSB en esta muestra';subOutput.textContent=`Roturas A: ${one.nA} · B: ${one.nB} · P(DSB) Monte Carlo: ${fmt(stats.dsb*100,1)} %`;break;}
  case '05':{const f=fates(state.tiempo,state.kr,state.km,state.kd);mainOutput.textContent=fmt(f.repair*100,1)+' %';subOutput.textContent=`Reparación acumulada a ${fmt(state.tiempo,1)} h · Fijación: ${fmt(f.mutation*100,1)} % · Pérdida: ${fmt(f.loss*100,1)} %`;break;}
- case '06':{const exp=hprtInduced(state.dosis)*1e6*state.celulas;const rng=seededRandom(2026+rerolls*103);counts={background:poisson(10*state.celulas,rng),treated:poisson((10+hprtInduced(state.dosis)*1e6)*state.celulas,rng)};mainOutput.textContent=fmt(exp,2);subOutput.textContent=`Mutantes inducidos esperados / ${fmt(state.celulas,1)} millón(es) de células clonables (extrapolación, no conteo observado)`;break;}
+ case '06':{const exp=hprtInduced(state.dosis)*1e6*state.celulas;const rng=seededRandom(2026+rerolls*103);counts={background:poisson(10*state.celulas,rng),treated:poisson((10+hprtInduced(state.dosis)*1e6)*state.celulas,rng)};mainOutput.textContent=fmt(exp,2);subOutput.textContent=`Mutantes inducidos esperados en ${millionUnit(state.celulas)} de células clonables (extrapolación, no conteo observado)`;break;}
  }
  if(reduced)requestAnimationFrame(t=>paint(t));
 }
@@ -106,8 +107,8 @@ function breaks(ctx,w,h){const x0=w*.11,x1=w*.88,yyA=h*.35,yyB=h*.63,dx=(x1-x0)/
  }
  const marks=(list,y,color)=>list.forEach((v,j)=>{if(!v)return;const x=x0+j*dx;line(ctx,x-8,y-9,x+8,y+9,color,3);line(ctx,x+8,y-9,x-8,y+9,color,3);circle(ctx,x,y,3,C.amber,8)});
  marks(one.a,yyA,C.amber);marks(one.b,yyB,C.pink);
- const ai=one.a.findIndex(Boolean),bi=one.b.findIndex(Boolean);
- if(ai>=0&&bi>=0){const xA=x0+ai*dx,xB=x0+bi*dx;line(ctx,xA,yyA+20,xB,yyB-20,'rgba(241,207,169,.28)',1);text(ctx,`Separación ejemplo = ${Math.abs(ai-bi)} pb`,w*.50,h*.17,11,C.amber,'center');}
+ const pair=closestBreakPair(one.a,one.b);
+ if(pair){const xA=x0+pair.a*dx,xB=x0+pair.b*dx;line(ctx,xA,yyA+20,xB,yyB-20,'rgba(241,207,169,.5)',1.5);text(ctx,`Separación mínima = ${pair.separation} pb`,w*.50,h*.17,11,C.amber,'center');}
  text(ctx,one.dsb?'✓  PAR DE ROTURAS COMPATIBLE CON DSB':'SIN PAR DSB EN ESTA DESINTEGRACIÓN',w*.5,h*.83,12,one.dsb?C.mint:C.pink,'center');
  text(ctx,'Criterio: una rotura por hebra, separación ≤ 10 pb',w*.5,h*.9,11,C.muted,'center');
 }
@@ -120,13 +121,14 @@ function repair(ctx,w,h){const rect={x:w*.12,y:h*.17,w:w*.74,h:h*.6};drawAxes(ct
  const labels=[['Lesión',C.white],['Reparación',C.mint],['Fijación',C.pink],['Pérdida',C.amber]];
  labels.forEach(([s,c],i)=>{const xx=rect.x+ i*rect.w/4;circle(ctx,xx+5,rect.y+rect.h+79,4,c);text(ctx,s,xx+14,rect.y+rect.h+83,10,C.white)});
 }
-function experiment(ctx,w,h){const rect={x:w*.13,y:h*.20,w:w*.71,h:h*.51};drawAxes(ctx,rect.x,rect.y,rect.w,rect.h,40,18,{x:'Dosis depositada en el núcleo (cGy)',y:'Mutantes inducidos esperados / 10⁶',yDigits:0});
+function experiment(ctx,w,h){const rect={x:w*.13,y:h*.22,w:w*.71,h:h*.49};drawAxes(ctx,rect.x,rect.y,rect.w,rect.h,40,18,{x:'Dosis nuclear (cGy)',yDigits:0});
  plot(ctx,rect,40,18,d=>hprtInduced(d)*1e6,C.mint,3.4);
  const x=rect.x+state.dosis/40*rect.w,y=rect.y+rect.h-(hprtInduced(state.dosis)*1e6/18)*rect.h;
  line(ctx,x,rect.y,x,rect.y+rect.h,'rgba(204,228,224,.32)');line(ctx,rect.x,y,x,y,'rgba(204,228,224,.25)');circle(ctx,x,y,5,C.amber,15);
- text(ctx,'TK6 · ¹³¹I–IdUrd',rect.x,rect.y-31,13,C.mint);text(ctx,'Pendiente publicada: 0,45 × 10⁻⁶ / cGy',rect.x,rect.y-12,11,C.muted);
- text(ctx,`Simulación Poisson (fondo supuesto): control ${counts.background} · tratado ${counts.treated}`,rect.x,rect.y+rect.h+80,11,C.amber);
- text(ctx,'SE30: sin curva cuantitativa publicada aquí; pocas mutaciones hasta 38 cGy.',rect.x,rect.y+rect.h+105,10,C.muted);
+ text(ctx,'TK6 · ¹³¹I–IdUrd',rect.x,rect.y-38,13,C.mint);
+ text(ctx,'Inducidos / 10⁶ · pendiente: 0,45 × 10⁻⁶/cGy',rect.x,rect.y-18,10,C.muted);
+ text(ctx,`Poisson ilustrativo · control ${counts.background} · tratado ${counts.treated}`,rect.x,rect.y+rect.h+67,10,C.amber);
+ text(ctx,'SE30: pocas mutaciones hasta 38 cGy (dato publicado)',rect.x,rect.y+rect.h+86,10,C.muted);
 }
 function paint(ms){const {ctx,w,h}=canvasSetup();paintBackground(ctx,w,h);const sec=(ms-initTime)/1000;
  switch(scene){case '01':isotope(ctx,w,h,sec);break;case '02':decays(ctx,w,h);break;case '03':helixView(ctx,w,h);break;case '04':breaks(ctx,w,h);break;case '05':repair(ctx,w,h);break;case '06':experiment(ctx,w,h);break;}

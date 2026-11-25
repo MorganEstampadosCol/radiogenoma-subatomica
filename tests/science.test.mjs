@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {PHYSICS,rate,survival,decayInDna,helix,siteProbabilities,scoreDsb,monteCarlo,anyBreakAnalytic,fates,hprtInduced,sampleOneEvent} from '../science.js';
+import {PHYSICS,rate,survival,decayInDna,helix,siteProbabilities,scoreDsb,closestBreakPair,monteCarlo,anyBreakAnalytic,fates,hprtInduced,sampleOneEvent} from '../science.js';
 const close=(actual,expected,tol=1e-10)=>assert.ok(Math.abs(actual-expected)<tol,`${actual} != ${expected}`);
 test('Semividas y signo de actividad',()=>{close(rate(59.4)*59.4,Math.LN2);close(survival(59.4,59.4),.5);close(survival(8.021,8.021),.5);});
 test('Competencia desintegración/salida y escenarios conservadores',()=>{close(decayInDna(59.4,2),.02280603507238289);close(decayInDna(8.021,2),.1473637698475143);assert.ok(decayInDna(8.021,2,1)<decayInDna(8.021,2));});
@@ -8,3 +8,4 @@ test('Monte Carlo independiente reproducible y límite analítico',()=>{const m1
 test('Destinos compiten y suman 1',()=>{for(const t of [0,.1,1,10,24,100]){const r=fates(t);close(r.remaining+r.repair+r.mutation+r.loss,1,1e-12);}});
 test('HPRT: no confundir cGy y Gy',()=>{close(hprtInduced(38)*1e6,17.1);close(hprtInduced(.38*100),hprtInduced(38));});
 test('La muestra de lesión es determinista con una semilla',()=>assert.deepEqual(sampleOneEvent(2,.48,1.5,2026),sampleOneEvent(2,.48,1.5,2026)));
+test('La separación mostrada es la del par compatible con DSB',()=>{const a=Array(60).fill(false),b=Array(60).fill(false);a[1]=a[30]=true;b[50]=b[34]=true;assert.ok(scoreDsb(a,b));assert.deepEqual(closestBreakPair(a,b),{a:30,b:34,separation:4});});

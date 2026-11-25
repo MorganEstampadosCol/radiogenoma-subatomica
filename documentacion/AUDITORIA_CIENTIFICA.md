@@ -12,9 +12,9 @@
 
 ## Comprobaciones reproducibles
 
-`python codigo/verificar.py` pasó 5 controles: semivida y signo de actividad, competencia de salida/decadencia, geometría y criterio de 10 pb, reproducibilidad del Monte Carlo junto con control analítico de la probabilidad de al menos una rotura, conservación de destinos y conversión de unidades HPRT.
+`python python/verificar.py` pasó 5 controles: semivida y signo de actividad, competencia de salida/decaimiento, geometría y criterio de 10 pb, reproducibilidad del Monte Carlo junto con control analítico de la probabilidad de al menos una rotura, conservación de destinos y conversión de unidades HPRT.
 
-`resultados/resumen_modelo.json` documenta tanto el escenario principal de 15.000 eventos por distancia como cuatro barridos de sensibilidad de 6.000 eventos por distancia. Las seis animaciones están en H.264 y la concatenación dura 42 s a 20 fps. El PDF de lectura y la fuente LaTeX se acompañan entre sí; la versión PDF se compuso a partir de la fuente LaTeX con una ruta de exportación alternativa porque la instalación de TeX del entorno no tenía formatos completos.
+`documentacion/resumen_modelo.json` documenta tanto el escenario principal de 15.000 eventos por distancia como cuatro barridos de sensibilidad de 6.000 eventos por distancia. Las seis animaciones están en H.264 y la concatenación dura 42 s a 20 fps. El PDF de lectura y la fuente LaTeX se acompañan entre sí; la versión PDF se compuso a partir de la fuente LaTeX con una ruta de exportación alternativa porque la instalación de TeX del entorno original no tenía formatos completos.
 
 ## Límite científico central
 
