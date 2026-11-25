@@ -50,9 +50,9 @@ RADIOGENOMA_GitHubPages/
 
 [Abrir el atlas RadioGenoma](https://morganestampadoscol.github.io/radiogenoma-subatomica/). GitHub Pages sirve las páginas desde la raíz de la rama `main`.
 
-La versión extensa de entrega es la [monografía final en PDF](./documentacion/Monografia_RadioGenoma_Entrega.pdf), con [versión editable DOCX](./documentacion/Monografia_RadioGenoma_Entrega.docx) y [fuente Markdown](./documentacion/Monografia_RadioGenoma_Entrega.md). Tiene portada, 33 páginas, seis apartados de exposición con figuras, derivaciones, lectura crítica de la evidencia, resultados reproducibles, referencias y anexos con el código científico e interactivo. La guía corta anterior permanece como material complementario.
+La versión extensa de entrega es la [monografía final en PDF](./documentacion/Monografia_RadioGenoma_Entrega.pdf) (64 páginas), compilada de su [fuente XeLaTeX](./documentacion/Monografia_RadioGenoma_Entrega.tex). Tiene portada con autores y docente, índice, lista de figuras, seis apartados para exposición, desarrollo continuo hasta el capítulo 16, derivaciones, ocho gráficas vectoriales, imágenes del atlas, evidencia humana, cálculos resueltos, referencias y anexos con el código científico e interactivo. El [DOCX](./documentacion/Monografia_RadioGenoma_Entrega.docx) y el [Markdown](./documentacion/Monografia_RadioGenoma_Entrega.md) son formatos auxiliares anteriores a la ampliación; el PDF de entrega se genera desde LaTeX.
 
-También se entrega la [versión T en PDF](./documentacion/Monografia_RadioGenoma_Version_T.pdf), [editable en DOCX](./documentacion/Monografia_RadioGenoma_Version_T.docx) y [fuente Markdown](./documentacion/Monografia_RadioGenoma_Version_T.md). Es la redacción académica continua sin guion oral, con seis capítulos de mecanismos y ecuaciones desarrolladas paso a paso. Ambas versiones separan resultados experimentales, escenarios hipotéticos y extrapolaciones.
+También se entrega la [versión T en PDF](./documentacion/Monografia_RadioGenoma_Version_T.pdf) (63 páginas) y su [fuente XeLaTeX](./documentacion/Monografia_RadioGenoma_Version_T.tex). Es la redacción académica continua sin guion oral y con ecuaciones desarrolladas paso a paso. Ambas versiones separan resultados experimentales, escenarios hipotéticos y extrapolaciones. El [DOCX](./documentacion/Monografia_RadioGenoma_Version_T.docx) y el [Markdown](./documentacion/Monografia_RadioGenoma_Version_T.md) se conservan como auxiliares anteriores a la ampliación. El desarrollo común está en [desarrollo_extenso.tex](./documentacion/desarrollo_extenso.tex).
 
 ## Publicarlo de nuevo en GitHub Pages
 
@@ -88,7 +88,9 @@ python python/modelo.py
 python python/animar.py
 ```
 
-**Nota:** el modelo original guarda sus resultados en `resultados/` al ejecutarse. El archivo de referencia que acompaña esta entrega está conservado en `documentacion/resumen_modelo.json`. Las animaciones MP4 incluidas ya están codificadas; regenerarlas requiere FFmpeg instalado. Para compilar la fuente LaTeX desde `documentacion/`, usa `pdflatex guia.tex` dos veces.
+**Nota:** el modelo original guarda sus resultados en `resultados/` al ejecutarse. El archivo de referencia que acompaña esta entrega está conservado en `documentacion/resumen_modelo.json`. Las animaciones MP4 incluidas ya están codificadas; regenerarlas requiere FFmpeg instalado.
+
+Para reconstruir ambas monografías, instala una distribución TeX reciente con XeLaTeX, `fontspec`, `polyglossia`, `minted`, `newunicodechar`, las fuentes Noto/DejaVu y Python con Pygments/`latexminted`. Desde `documentacion/`, ejecuta tres veces `xelatex -shell-escape Monografia_RadioGenoma_Entrega.tex` y tres veces `xelatex -shell-escape Monografia_RadioGenoma_Version_T.tex` para estabilizar índices y referencias. Los `.tex` incluyen las gráficas PDF vectoriales de `figuras_monografia/`, las imágenes de `media/` y el código fuente de la raíz. Si se edita el Markdown auxiliar o el desarrollo común, `python python/crear_fuentes_latex.py` regenera los `.tex`. `python python/crear_monografia_final.py` y `python python/figuras_ampliacion.py` regeneran las gráficas.
 
 ## Qué calculan realmente las seis escenas
 

@@ -24,6 +24,7 @@ NAVY='#12263d'; TEAL='#087e83'; GOLD='#bd7040'; PINK='#b46482'
 def save(name):
     plt.tight_layout(pad=1.7)
     plt.savefig(FIG/name, dpi=200, facecolor='white', bbox_inches='tight')
+    plt.savefig(FIG/Path(name).with_suffix('.pdf'), facecolor='white', bbox_inches='tight')
     plt.close()
 
 base=sample_lesions()
