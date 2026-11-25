@@ -50,6 +50,10 @@ RADIOGENOMA_GitHubPages/
 
 [Abrir el atlas RadioGenoma](https://morganestampadoscol.github.io/radiogenoma-subatomica/). GitHub Pages sirve las páginas desde la raíz de la rama `main`.
 
+La versión extensa de entrega es la [monografía final en PDF](./documentacion/Monografia_RadioGenoma_Entrega.pdf), con [versión editable DOCX](./documentacion/Monografia_RadioGenoma_Entrega.docx) y [fuente Markdown](./documentacion/Monografia_RadioGenoma_Entrega.md). Tiene portada, 33 páginas, seis apartados de exposición con figuras, derivaciones, lectura crítica de la evidencia, resultados reproducibles, referencias y anexos con el código científico e interactivo. La guía corta anterior permanece como material complementario.
+
+También se entrega la [versión T en PDF](./documentacion/Monografia_RadioGenoma_Version_T.pdf), [editable en DOCX](./documentacion/Monografia_RadioGenoma_Version_T.docx) y [fuente Markdown](./documentacion/Monografia_RadioGenoma_Version_T.md). Es la redacción académica continua sin guion oral, con seis capítulos de mecanismos y ecuaciones desarrolladas paso a paso. Ambas versiones separan resultados experimentales, escenarios hipotéticos y extrapolaciones.
+
 ## Publicarlo de nuevo en GitHub Pages
 
 **Si se acaba de crear un repositorio nuevo, se recomienda hacerlo público para que la web sea accesible a cualquiera**. No se debe modificar ni reutilizar ningún repositorio comercial preexistente.
